@@ -183,6 +183,7 @@ links.Timeline = function(container, options) {
 
         'eventMargin': 10,     // minimal margin between events
         'eventMarginAxis': 20, // minimal margin between events and the axis
+        'eventGroupMargin': 6, // minimal margin between events vertically
         'dragAreaWidth': 10,   // pixels
 
         'min': undefined,
@@ -1615,11 +1616,11 @@ links.Timeline.prototype.recalcItems = function () {
             resized = resized || (groupHeight != group.height);
             group.height = groupHeight;
 
-            actualHeight += groups[i].height + options.eventMargin;
+            actualHeight += groups[i].height + options.eventGroupMargin;
         }
 
         // calculate top positions of the group labels and lines
-        var eventMargin = options.eventMargin,
+        var eventMargin = options.eventGroupMargin,
             top = options.axisOnTop ?
                 options.eventMarginAxis + eventMargin/2 :
                 size.contentHeight - options.eventMarginAxis + eventMargin/ 2,
@@ -4794,10 +4795,10 @@ links.Timeline.prototype.createItem = function(itemData) {
     var initialTop,
         options = this.options;
     if (options.axisOnTop) {
-        initialTop = this.size.axis.height + options.eventMarginAxis + options.eventMargin / 2;
+        initialTop = this.size.axis.height + options.eventMarginAxis + options.eventGroupMargin / 2;
     }
     else {
-        initialTop = this.size.contentHeight - options.eventMarginAxis - options.eventMargin / 2;
+        initialTop = this.size.contentHeight - options.eventMarginAxis - options.eventGroupMargin / 2;
     }
 
     if (type in this.itemTypes) {
@@ -5198,7 +5199,7 @@ links.Timeline.prototype.stackCalculateFinal = function(items) {
     var size = this.size,
         options = this.options,
         axisOnTop = options.axisOnTop,
-        eventMargin = options.eventMargin,
+        eventMargin = options.eventGroupMargin,
         eventMarginAxis = options.eventMarginAxis,
         groupBase = (axisOnTop)
                   ? size.axis.height + eventMarginAxis + eventMargin/2
@@ -5251,7 +5252,7 @@ links.Timeline.prototype.finalItemsPosition = function(items, groupBase, group) 
         iMax,
         options = this.options,
         axisOnTop = options.axisOnTop,
-        eventMargin = options.eventMargin,
+        eventMargin = options.eventGroupMargin,
         groupFinalItems;
 
     // initialize final positions and fill finalItems
