@@ -200,7 +200,7 @@ links.Timeline = function(container, options) {
         'groupsChangeable': true,
         'timeChangeable': true,
         
-        'stickyAxis' : true,
+        'stickyAxis' : false,
 
         'showCurrentTime': true, // show a red bar displaying the current time
         'showCustomTime': false, // show a blue, draggable bar displaying a custom time
