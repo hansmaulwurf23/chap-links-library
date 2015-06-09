@@ -199,6 +199,8 @@ links.Timeline = function(container, options) {
         'snapEvents': true,
         'groupsChangeable': true,
         'timeChangeable': true,
+        
+        'stickyAxis' : true,
 
         'showCurrentTime': true, // show a red bar displaying the current time
         'showCustomTime': false, // show a blue, draggable bar displaying a custom time
@@ -1107,9 +1109,16 @@ links.Timeline.prototype.repaintAxis = function() {
 
     if (!axis.frame) {
         axis.frame = document.createElement("DIV");
-        axis.frame.style.position = "absolute";
-        axis.frame.style.left = "0px";
-        axis.frame.style.top = "0px";
+        if (options.stickyAxis != undefined && options.stickyAxis == true) {
+        	axis.frame.style.position = "fixed";
+        	axis.frame.style.left = options.groupsWidth + "px";
+        	axis.frame.style.top = window.getComputedStyle(document.body, null).marginTop;
+        	axis.frame.style.zIndex = "1";
+        } else {
+        	axis.frame.style.position = "absolute";
+        	axis.frame.style.left = "0px";
+        	axis.frame.style.top = "0px";
+        }
         dom.content.appendChild(axis.frame);
     }
 
@@ -1978,15 +1987,25 @@ links.Timeline.prototype.repaintGroups = function() {
         // create the axis grid line background
         var background = document.createElement("DIV");
         background.className = "timeline-axis";
-        background.style.position = "absolute";
-        background.style.left = "0px";
-        background.style.width = "100%";
+        if (options.stickyAxis == true) {
+        	background.style.position = "fixed";
+        	background.style.width = "155px";
+        	background.style.top = window.getComputedStyle(document.body, null).marginTop; 
+        	background.style.left = window.getComputedStyle(document.body, null).marginLeft; 
+        	background.style.zIndex = "1";
+        } else {
+        	background.style.position = "absolute";
+        	background.style.width = "100%";
+        	background.style.left = "0px";
+        }
         background.style.border = "none";
 
         frame.appendChild(background);
         dom.groups.background = background;
     }
-    dom.groups.background.style.top = size.axis.top + 'px';
+    if (options.stickyAxis !== true) {
+    	dom.groups.background.style.top = size.axis.top + 'px';
+    }
     dom.groups.background.style.height = size.axis.height + 'px';
 
     if (!dom.groups.line) {
